@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "start": "node dist/server.cjs",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --outfile=dist/server.cjs --external:express --external:cors --external:dotenv --external:firebase-admin --external:node-fetch --external:paypal__paypalhttp --external:@paypal/checkout-server-sdk",
+    "start": "npx tsx server.ts",
+    "build": "npx vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "build:server": "esbuild server.ts --bundle --platform=node --outfile=dist/server.cjs --external:express --external:cors --external:dotenv"
@@ -36,7 +36,10 @@
     "react-syntax-highlighter": "latest",
     "recharts": "^3.8.0",
     "tsx": "^4.21.0",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.7",
+    "vite": "^6.2.0",
+    "esbuild": "^0.20.0",
+    "@vitejs/plugin-react": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
