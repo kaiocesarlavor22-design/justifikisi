@@ -1,0 +1,110 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == "kaiocesarlavor22@gmail.com" && request.auth.token.email_verified == true;
+    }
+
+    function isValidDocument(data) {
+      return data.keys().hasAll(['title', 'content', 'userId', 'createdAt', 'updatedAt']) &&
+             data.keys().hasOnly(['title', 'content', 'userId', 'folderId', 'createdAt', 'updatedAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.content is string && data.content.size() < 1000000 &&
+             data.userId == request.auth.uid &&
+             data.createdAt is string &&
+             data.updatedAt is string &&
+             (!('folderId' in data) || data.folderId is string);
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'role', 'createdAt']) &&
+             data.email is string &&
+             data.role in ['admin', 'user'] &&
+             data.createdAt is string &&
+             (data.keys().hasOnly(['email', 'role', 'createdAt', 'plan', 'updatedAt', 'displayName', 'photoURL']));
+    }
+
+    function isValidTemplate(data) {
+      return data.keys().hasAll(['title', 'userId', 'createdAt']) &&
+             data.keys().hasOnly(['title', 'description', 'emoji', 'legalArea', 'documentTypeKey', 'caseInfo', 'userId', 'isPublic', 'createdAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 100 &&
+             (!('description' in data) || data.description is string) &&
+             (!('emoji' in data) || data.emoji is string) &&
+             (!('legalArea' in data) || data.legalArea is string) &&
+             (!('documentTypeKey' in data) || data.documentTypeKey is string) &&
+             (!('caseInfo' in data) || data.caseInfo is string) &&
+             (!('isPublic' in data) || data.isPublic is bool) &&
+             data.userId == request.auth.uid &&
+             data.createdAt is string;
+    }
+
+    function isValidFolder(data) {
+      return data.keys().hasAll(['name', 'userId', 'createdAt']) &&
+             data.keys().hasOnly(['name', 'userId', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.userId == request.auth.uid &&
+             data.createdAt is string;
+    }
+
+    function isValidRound(data) {
+      return data.keys().hasAll(['prompt', 'userId', 'createdAt', 'outputs']) &&
+             data.keys().hasOnly(['prompt', 'systemInstruction', 'mainCategoryKey', 'legalArea', 'documentTypeKey', 'analysisTypeKey', 'model', 'temperature', 'searchJurisprudence', 'userId', 'createdAt', 'outputs', 'promptParts']) &&
+             data.prompt is string &&
+             (!('systemInstruction' in data) || data.systemInstruction is string) &&
+             (!('mainCategoryKey' in data) || data.mainCategoryKey is string) &&
+             (!('legalArea' in data) || data.legalArea is string) &&
+             (!('documentTypeKey' in data) || data.documentTypeKey is string) &&
+             (!('analysisTypeKey' in data) || data.analysisTypeKey is string) &&
+             (!('model' in data) || data.model is string) &&
+             (!('temperature' in data) || data.temperature is number) &&
+             (!('searchJurisprudence' in data) || data.searchJurisprudence is bool) &&
+             data.outputs is list &&
+             data.userId == request.auth.uid &&
+             data.createdAt is string;
+    }
+
+    match /documents/{documentId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidDocument(request.resource.data);
+      allow update: if isOwner(resource.data.userId) && isValidDocument(request.resource.data);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data) && request.resource.data.role == 'user';
+      allow update: if (isOwner(userId) && isValidUser(request.resource.data) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /templates/{templateId} {
+      allow read: if isAuthenticated() && (resource.data.isPublic == true || isOwner(resource.data.userId) || isAdmin());
+      allow create: if isAuthenticated() && isValidTemplate(request.resource.data);
+      allow update: if isOwner(resource.data.userId) && isValidTemplate(request.resource.data);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /folders/{folderId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidFolder(request.resource.data);
+      allow update: if isOwner(resource.data.userId) && isValidFolder(request.resource.data);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    match /rounds/{roundId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidRound(request.resource.data);
+      allow update: if isOwner(resource.data.userId) && isValidRound(request.resource.data);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+  }
+}

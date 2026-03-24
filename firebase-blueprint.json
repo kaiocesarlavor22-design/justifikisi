@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the system.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "createdAt"]
+    },
+    "Document": {
+      "title": "Document",
+      "description": "A legal document created or edited by the user.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "userId": { "type": "string" },
+        "folderId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "userId", "createdAt", "updatedAt"]
+    },
+    "Template": {
+      "title": "Template",
+      "description": "A reusable document template.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "emoji": { "type": "string" },
+        "legalArea": { "type": "string" },
+        "documentTypeKey": { "type": "string" },
+        "caseInfo": { "type": "string" },
+        "userId": { "type": "string" },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "userId", "createdAt"]
+    },
+    "Folder": {
+      "title": "Folder",
+      "description": "A folder to organize documents.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "userId", "createdAt"]
+    },
+    "Round": {
+      "title": "Round",
+      "description": "A generation round (feed item).",
+      "type": "object",
+      "properties": {
+        "prompt": { "type": "string" },
+        "systemInstruction": { "type": "string" },
+        "mainCategoryKey": { "type": "string" },
+        "legalArea": { "type": "string" },
+        "documentTypeKey": { "type": "string" },
+        "model": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "outputs": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["prompt", "userId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/documents/{documentId}": {
+      "schema": "Document",
+      "description": "Collection of legal documents."
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles."
+    },
+    "/templates/{templateId}": {
+      "schema": "Template",
+      "description": "Collection of document templates."
+    },
+    "/folders/{folderId}": {
+      "schema": "Folder",
+      "description": "Collection of folders."
+    },
+    "/rounds/{roundId}": {
+      "schema": "Round",
+      "description": "Collection of generation rounds."
+    }
+  }
+}

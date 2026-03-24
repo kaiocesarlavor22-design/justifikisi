@@ -1,0 +1,7 @@
+{
+  "name": "Remix: JUSTIFIKISI",
+  "description": "O Ecossistema Completo de Criação de Documentos Jurídicos Inteligentes. Gere petições, contratos, notificações e mais, com o poder da IA.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
