@@ -85,7 +85,7 @@ const OnboardingTour = ({ currentView }) => {
       }}
       styles={{
         options: {
-          primaryColor: '#D4AF37',
+          primaryColor: '#FF6B00',
           zIndex: 10000,
         },
       }}

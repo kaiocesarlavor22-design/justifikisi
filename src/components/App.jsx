@@ -47,6 +47,7 @@ import ConfirmationDialog from './ConfirmationDialog';
 import LandingPage from './LandingPage';
 import Dashboard from './Dashboard';
 import { FoldersView, TemplatesView } from './DatabaseViews';
+import AccessCode from './AccessCode';
 
 const FILES_LIMIT = 10;
 const FILES_TOTAL_SIZE_LIMIT_MB = 50;
@@ -57,6 +58,8 @@ const ITEMS_PER_PAGE = 3;
 
 
 export default function App() {
+  const [hasAccess, setHasAccess] = React.useState(() => localStorage.getItem('justi_access') === '1');
+    if (!hasAccess) return <AccessCode onUnlock={() => setHasAccess(true)} />;
   const {
     feed,
     mainCategoryKey,

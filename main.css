@@ -89,18 +89,18 @@
   --bg-primary: #0B0F19; /* Deep Navy/Graphite */
   --bg-secondary: #111827;
   --bg-tertiary: #1F2937;
-  --primary: #D4AF37; /* Electric Gold */
-  --primary-dark: #B8960B;
-  --primary-light: rgba(212, 175, 55, 0.1);
-  --secondary: #00E5FF; /* Cyan */
+  --primary: #FF6B00; /* Electric Gold */
+  --primary-dark: #CC5500;
+  --primary-light: rgba(255, 107, 0, 0.1);
+  --secondary: #FF8C00; /* Cyan */
   --error: #ef4444;
   --text-primary: #F3F4F6;
   --text-secondary: #9CA3AF;
   --text-tertiary: #6B7280;
   --border-primary: rgba(255, 255, 255, 0.08);
   --border-secondary: rgba(255, 255, 255, 0.15);
-  --selection-bg: rgba(0, 229, 255, 0.2);
-  --selection-text: #00E5FF;
+  --selection-bg: rgba(255, 107, 0, 0.2);
+  --selection-text: #FF8C00;
   --tooltip-bg: #1F2937;
   --tooltip-text: #F3F4F6;
   --tooltip-border: rgba(255, 255, 255, 0.1);
@@ -406,11 +406,11 @@ input::placeholder, textarea::placeholder {
 .status-badge.completed {
   background-color: rgba(0, 229, 255, 0.1);
   color: var(--secondary);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(255, 107, 0, 0.2);
 }
 
 .status-badge.processing {
-  background-color: rgba(212, 175, 55, 0.1);
+  background-color: rgba(255, 107, 0, 0.1);
   color: var(--primary);
   border: 1px solid rgba(212, 175, 55, 0.2);
 }

@@ -26,15 +26,10 @@ testConnection();
 getRedirectResult(auth).catch(() => {});
 
 export const signInWithGoogle = async () => {
-    try {
-          return await signInWithPopup(auth, googleProvider);
-    } catch (error: any) {
-          if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                  return signInWithRedirect(auth, googleProvider);
-          }
-          throw error;
-    }
-};
+        // Use redirect - more reliable than popup across all browsers
+            return signInWithRedirect(auth, googleProvider);
+            };
+}
 export const logout = () => signOut(auth);
 
 export enum OperationType {

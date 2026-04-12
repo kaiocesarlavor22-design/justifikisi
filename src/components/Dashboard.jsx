@@ -48,7 +48,7 @@ const SUGGESTED_TEMPLATES = [
   }
 ];
 
-const COLORS = ['#D4AF37', '#00E5FF', '#10b981', '#ef4444', '#8b5cf6', '#f59e0b'];
+const COLORS = ['#FF6B00', '#FF8C00', '#10b981', '#ef4444', '#8b5cf6', '#f59e0b'];
 
 export default function Dashboard({ feed, onViewItem }) {
     const stats = useMemo(() => {
