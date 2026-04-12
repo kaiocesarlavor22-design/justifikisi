@@ -28,8 +28,7 @@ getRedirectResult(auth).catch(() => {});
 export const signInWithGoogle = async () => {
         // Use redirect - more reliable than popup across all browsers
             return signInWithRedirect(auth, googleProvider);
-            };
-}
+};
 export const logout = () => signOut(auth);
 
 export enum OperationType {
