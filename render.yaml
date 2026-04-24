@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: justifikisi
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: API_KEY
+        sync: false
+        description: "Sua chave do Google AI Studio (Gemini)"
+      - key: NODE_ENV
+        value: production
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+        description: "Opcional: ID do cliente PayPal"
